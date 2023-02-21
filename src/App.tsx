@@ -1,11 +1,23 @@
-import React from 'react';
-import gitm from './assets/gitm.png'
+import React, { useEffect, useState } from 'react';
+import gitm from './assets/gitm.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getLevel } from './api/getLevel';
 
-import { Container, Stack, Carousel, Nav, Navbar, Table } from 'react-bootstrap';
+import { Container, Stack, Nav, Navbar, Table } from 'react-bootstrap';
 
 function App() {
+  const [level, setLevel] = useState(0);
   const rows = [1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+  const retrieveLevelData = async () => {
+    const res = await getLevel();
+    setLevel(res);
+  }
+  useEffect(() => {
+    const interval = setInterval(() => retrieveLevelData(), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -41,7 +53,7 @@ function App() {
               <tr>
                 <td>1001</td>
                 <td>Location</td>
-                <td>Level</td>
+                <td>{ level }</td>
               </tr>
               {
               rows.map( row => (
