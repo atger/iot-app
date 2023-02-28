@@ -1,74 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import gitm from './assets/gitm.png';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getLevel } from './api/getLevel';
-
-import { Container, Stack, Nav, Navbar, Table } from 'react-bootstrap';
+import Home from './pages/Home';
+import GMS from './pages/GMS';
+import AMS from './pages/AMS';
+import Navigation from './components/navbar';
 
 function App() {
-  const [level, setLevel] = useState(0);
-  const rows = [1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
-  const retrieveLevelData = async () => {
-    const res = await getLevel();
-    setLevel(res);
-  }
-  useEffect(() => {
-    const interval = setInterval(() => retrieveLevelData(), 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
   return (
-    <div className="App">
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">Garbage Monitoring System</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Stats</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <Stack gap={3}>
-        <div>
-          <img
-            className="d-block w-100"
-            src={gitm}
-            alt="First slide"
-          />
-        </div>
-        <div>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Bin Id</th>
-                <th>Bin Location</th>
-                <th>Bin Level</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1001</td>
-                <td>Location</td>
-                <td>{ level }</td>
-              </tr>
-              {
-              rows.map( row => (
-                <tr>
-                  <td>{row}</td>
-                  <td>Location</td>
-                  <td>Level</td>
-                </tr>
-              ))
-              }
-            </tbody>
-          </Table>
-        </div>
-      </Stack>
-    </div>
+    <BrowserRouter>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route index element={<Home />} />
+        <Route path="/gms" element={<GMS />} />
+        <Route path="/ams" element={<AMS />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </BrowserRouter>  
   );
 }
 
