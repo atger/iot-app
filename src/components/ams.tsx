@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { getLevel } from '../api/getLevel';
-
-import { Container, Stack, Nav, Navbar, Table } from 'react-bootstrap';
+import React, { useEffect, useState }from 'react';
+import { Table } from 'react-bootstrap';
+import { getAttendanceData } from '../api/getAttendanceData';
 
 function AMSTable() {
-  const [level, setLevel] = useState(0);
-  const rows = [1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
-  const retrieveLevelData = async () => {
-    const res = await getLevel();
-    setLevel(res);
+  const [data, setData] = useState([]);
+  const retrieveAttendanceData = async () => {
+    const res = await getAttendanceData();
+    setData(res);
   }
   useEffect(() => {
-    const interval = setInterval(() => retrieveLevelData(), 1000);
+    const interval = setInterval(() => retrieveAttendanceData(), 1000);
     return () => {
       clearInterval(interval);
     };
   }, []);
+  console.log(data)
   return (
           <Table striped bordered hover>
             <thead>
@@ -26,12 +25,14 @@ function AMSTable() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Vijay</td>
-                <td>28/02/2023</td>
-                <td>8:57</td>
-              </tr>
               {
+               data.map(d => (
+                 <tr>
+                   <td>{d["name"]}</td>
+                   <td>{d["date"]}</td>
+                   <td>{d["time"]}</td>
+                 </tr>
+               ))
               }
             </tbody>
           </Table>

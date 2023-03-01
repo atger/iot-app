@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getLevel } from '../api/getLevel';
 
-import { Container, Stack, Nav, Navbar, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 function GMSTable() {
   const [level, setLevel] = useState(0);
